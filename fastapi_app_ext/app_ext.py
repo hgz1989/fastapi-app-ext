@@ -16,10 +16,11 @@ from fastapi.staticfiles import StaticFiles
 class AppExt:
     """应用程序扩展"""
 
-    def __init__(self, app: FastAPI):
+    def __init__(self, app: FastAPI, root_dir: Path = Path('../')):
         """
         初始化
         :param app:FastAPI应用
+        :param root_dir:根目录
         """
         # 移除所有默认Route
         app.router.routes = []
@@ -38,7 +39,7 @@ class AppExt:
                 redoc_url = app.openapi_url.removesuffix('.json') + app.redoc_url
                 app.add_route(path=redoc_url, route=self._redoc_html, include_in_schema=False)
             # 设置静态文件路径
-            self.static_dir = Path(__file__).resolve().parents[1] / 'static'
+            self.static_dir = root_dir / 'static/openapi'
             if self.static_dir.exists():
                 app.mount('/static', StaticFiles(directory=self.static_dir), name='static')
 
@@ -50,7 +51,7 @@ class AppExt:
         :param default_url:默认地址
         :return:路径
         """
-        resource_path = self.static_dir / 'openapi' / resource_type / resource_name
+        resource_path = self.static_dir / resource_type / resource_name
         return f'/static/openapi/{resource_type}/{resource_name}' if resource_path.is_file() else default_url
 
     @staticmethod
