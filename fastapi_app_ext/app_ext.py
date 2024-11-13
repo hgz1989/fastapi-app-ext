@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 class AppExt:
     """应用程序扩展"""
 
-    def __init__(self, app: FastAPI, root_dir: Path = Path('../')):
+    def __init__(self, app: FastAPI, root_dir: Path):
         """
         初始化
         :param app:FastAPI应用
@@ -61,17 +61,19 @@ class AppExt:
         :return:JSON响应
         """
         r.app.openapi_schema = r.app.openapi()
+        print(r.app.openapi_schema)
         for _, method_item in r.app.openapi_schema.get('paths').items():
             for _, param in method_item.items():
                 responses = param.get('responses')
-                # remove 422 response, also can remove other status code
-                if '422' in responses:
-                    del responses['422']
-        # 移除HTTPValidationError与ValidationError
-        components = r.app.openapi_schema.get('components', {})
-        schemas = components.get('schemas', {})
-        schemas.pop('HTTPValidationError', None)
-        schemas.pop('ValidationError', None)
+                print(responses)
+        #         # remove 422 response, also can remove other status code
+        #         if '422' in responses:
+        #             del responses['422']
+        # # 移除HTTPValidationError与ValidationError
+        # components = r.app.openapi_schema.get('components', {})
+        # schemas = components.get('schemas', {})
+        # schemas.pop('HTTPValidationError', None)
+        # schemas.pop('ValidationError', None)
         return JSONResponse(r.app.openapi_schema)
 
     async def _swagger_ui_html(self, r: Request) -> HTMLResponse:
