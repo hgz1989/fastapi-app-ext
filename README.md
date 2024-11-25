@@ -20,7 +20,7 @@ Hello World Example
     from fastapi import FastAPI
     from fastapi-app-ext import AppExt
 
-    app = FastAPI(title='Hollo World Example')
+    app = FastAPI(title='Hello World Example')
     AppExt(app)
 
     @app.get('/')
