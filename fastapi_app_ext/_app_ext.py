@@ -11,7 +11,6 @@ from fastapi.openapi.docs import (
 )
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel, Field
 
 
 class AppExt:

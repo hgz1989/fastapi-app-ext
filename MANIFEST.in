@@ -1,0 +1,2 @@
+recursive-include fastapi_app_ext/assets *
+prune   tests
